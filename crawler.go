@@ -57,7 +57,7 @@ func (p *Crawler) FetchProxys(
 				go func(subProxys []*Proxy, client *http.Client) {
 					defer waiter.Done()
 					for _, proxy := range subProxys {
-						if err := proxy.Test(client, testURL, check); err != nil {
+						if err := proxy.Test(client, testURL); err != nil {
 							continue
 						}
 						select {

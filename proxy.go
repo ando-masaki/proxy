@@ -2,8 +2,10 @@ package proxy
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 )
 
@@ -14,26 +16,18 @@ type Proxy struct {
 	ConnTime time.Duration
 }
 
-func (p *Proxy) Test(client *http.Client, URL string, check func(resp *http.Response) error) error {
+func (p *Proxy) Test(client *http.Client, URL string) error {
 	transport, err := p.Transport()
 	if err != nil {
 		return err
 	}
 	client.Transport = transport
-	before := time.Now()
 	resp, err := client.Get(URL)
-	connTime := time.Now().Sub(before)
 	if err != nil {
 		return err
 	}
-	p.ConnTime = connTime
-	if check == nil {
-		return nil
-	}
-	err = check(resp)
-	if err != nil {
-		return err
-	}
+	io.Copy(os.Stdout, resp.Body)
+	fmt.Println("")
 	return nil
 }
 
