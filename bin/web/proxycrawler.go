@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/xlaurent/proxy"
+	"github.com/ando-masaki/proxy"
 )
 
 type Observer interface {

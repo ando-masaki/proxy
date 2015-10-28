@@ -9,7 +9,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/xlaurent/proxy"
+	"github.com/ando-masaki/proxy"
 )
 
 var config = struct {

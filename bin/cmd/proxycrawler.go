@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/xlaurent/proxy"
+	"github.com/ando-masaki/proxy"
 )
 
 var timeout = flag.Duration("t", 2*time.Second, "set timeout")

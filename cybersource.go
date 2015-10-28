@@ -12,7 +12,7 @@ import (
 )
 
 func CyberSource() ([]*Proxy, error) {
-	resp, err := http.Get("http://www.cybersyndrome.net/search.cgi?q=CN&a=ABC&f=s&s=new&n=500")
+	resp, err := http.Get("http://www.cybersyndrome.net/search.cgi?a=A&f=s&s=new&n=500")
 	if err != nil {
 		return nil, err
 	}
@@ -27,8 +27,8 @@ func CyberSource() ([]*Proxy, error) {
 func extractProxys(str string) (proxys []*Proxy) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println(err,"may be blocked by source site, sleep 259s")
-			time.Sleep(259*time.Second)
+			log.Println(err, "may be blocked by source site, sleep 259s")
+			time.Sleep(259 * time.Second)
 		}
 	}()
 	exp := regexp.MustCompile(`\[(.+?)\]`)
