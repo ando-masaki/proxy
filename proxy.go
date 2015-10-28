@@ -3,6 +3,7 @@ package proxy
 import (
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -22,7 +23,12 @@ func (p *Proxy) Test(client *http.Client, URL string) error {
 		return err
 	}
 	client.Transport = transport
-	resp, err := client.Get(URL)
+	req, err := http.NewRequest("GET", URL, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36")
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}
@@ -36,7 +42,14 @@ func (p *Proxy) Transport() (*http.Transport, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't parse proxy url %s,%v", p.String(), err)
 	}
-	return &http.Transport{Proxy: http.ProxyURL(URL)}, nil
+	return &http.Transport{
+		Proxy: http.ProxyURL(URL),
+		Dial: (&net.Dialer{
+			Timeout:   10 * time.Second,
+			KeepAlive: 10 * time.Second,
+		}).Dial,
+		TLSHandshakeTimeout: 10 * time.Second,
+	}, nil
 }
 
 func (p Proxy) String() string {

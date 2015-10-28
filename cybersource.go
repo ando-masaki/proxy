@@ -12,7 +12,7 @@ import (
 )
 
 func CyberSource() ([]*Proxy, error) {
-	resp, err := http.Get("http://www.cybersyndrome.net/search.cgi?q=&a=A&f=s&s=new&n=500")
+	resp, err := http.Get("http://www.cybersyndrome.net/search.cgi?q=JP|CN&a=ABC&f=s&s=new&n=500")
 	if err != nil {
 		return nil, fmt.Errorf("proxy.CyberSource http.Get err: %s", err)
 	}
